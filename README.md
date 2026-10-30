@@ -1,6 +1,6 @@
 # Detached
 
-![Image showing fences and walls with modified connections](mod_resources/showcase_image.png)
+![Image showing fences and walls with modified connections](mod_resources/after_1.png)
 
 **Take control of your fences, walls, and bars!**
 
