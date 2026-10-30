@@ -33,6 +33,7 @@ Want to make blocks from other mods compatible with Detached? You can add them u
 - detachable_by_pickaxe.json
 
 These files determine which blocks can be modified and which tool is required to modify them.
+<br> Tags must be in the directory: `.../data/detached/tags/block/`
 
 **detachable_by_axe.json:**
 ```json
@@ -59,5 +60,5 @@ These files determine which blocks can be modified and which tool is required to
 ⚠️ **Important:** Adding a block to either tag does not automatically make it compatible with Detached. 
 The block must have all four horizontal connection properties, matching one of the following:
 - **Fence-style**: NORTH, EAST, SOUTH, and WEST (boolean properties)
-- **Wall-style**: NORTH_WALL, EAST_WALL, SOUTH_WALL, and WEST_WALL (WallSide properties)
+- **Wall-style**: NORTH_WALL, EAST_WALL, SOUTH_WALL, and WEST_WALL (WallSide properties).
   If a block does not have all four properties of at least one of these types, it will not be supported.
