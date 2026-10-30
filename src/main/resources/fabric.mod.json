@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "detached",
+	"version": "${version}",
+	"name": "Detached",
+	"description": "Take control of your connections! Detach or force individual arms on fences, walls, iron bars and glass panes.",
+	"authors": [
+		"Skixl"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/detached",
+		"sources": "https://github.com/Skixl/Detached",
+		"issues": "https://github.com/Skixl/Detached/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/detached/detached.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.skixl.detached.Detached"
+		]
+	},
+	"mixins": [
+		"detached.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
