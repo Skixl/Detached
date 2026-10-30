@@ -33,8 +33,6 @@ public abstract class BlockStateBaseMixin {
         DetachedConnections data = DetachedConnections.get(serverLevel);
         if (!data.hasOverrides(blockPos)) return;
 
-        BlockState before = result;
-
         // applies detached/forced overrides on top of whatever the block computed is
         for (Direction dir : Direction.Plane.HORIZONTAL) {
             switch (data.getArm(blockPos, dir)) {
@@ -55,7 +53,7 @@ public abstract class BlockStateBaseMixin {
 
             if (up != 0) {
                 result = Arms.setUpProperty(result, up > 0);
-            } else if (result != before) {
+            } else {
                 BlockState old = (BlockState) (Object) this;
 
                 boolean keep;
