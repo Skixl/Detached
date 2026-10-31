@@ -3,6 +3,7 @@
   "values": [
     "#minecraft:walls",
     "#c:bars",
-    "#c:glass_panes"
+    "#c:glass_panes",
+    "#c:fences/nether_brick"
   ]
 }
