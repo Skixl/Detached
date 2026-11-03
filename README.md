@@ -24,8 +24,8 @@ Ever wanted a fence or wall to not connect to a neighboring block? Well, look no
 For walls, you can also sneak and right-click the top of the center post to toggle its visibility.
 
 ## Installation
-Detached technically only needs to be installed on the server.<br>
-However, installing it on the client is also recommended, as it is necessary for the interaction animation when modifying blocks.
+Detached is only required on the server. <br>
+Installing it on the client is recommended for hand swing animations and to prevent blocks placed next to modified blocks from flickering. <br>
 
 ## Adding Other Blocks
 Want to make blocks from other mods compatible with Detached? You can add them using the block tag files:
