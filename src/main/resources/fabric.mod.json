@@ -18,6 +18,9 @@
 	"entrypoints": {
 		"main": [
 			"com.skixl.detached.Detached"
+		],
+		"client": [
+			"com.skixl.detached.DetachedClient"
 		]
 	},
 	"mixins": [

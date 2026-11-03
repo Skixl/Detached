@@ -1,12 +1,14 @@
 package com.skixl.detached.mixin;
 
 import com.skixl.detached.interaction.ConnectionDetacher;
+import com.skixl.detached.networking.DetachedClientData;
 import com.skixl.detached.util.Arms;
 import com.skixl.detached.world.saveddata.DetachedConnections;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -23,17 +25,23 @@ public abstract class BlockStateBaseMixin {
 
     @SuppressWarnings("DataFlowIssue")
     @Inject(method = "updateShape", at = @At("RETURN"), cancellable = true)
-    private void detached$keepOverrides(LevelReader level, ScheduledTickAccess ticks, BlockPos blockPos, Direction direction, BlockPos neighbourPos,
+    private void detached$keepOverrides(LevelReader levelReader, ScheduledTickAccess ticks, BlockPos blockPos, Direction direction, BlockPos neighbourPos,
                                         BlockState neighbourState, RandomSource random, CallbackInfoReturnable<BlockState> cir) {
 
         BlockState result = cir.getReturnValue();
         if (!ConnectionDetacher.isDetachable(result) || Arms.doesNotSupport(result)) return;
-        if (!(level instanceof ServerLevel serverLevel)) return;
 
-        DetachedConnections data = DetachedConnections.get(serverLevel);
+        DetachedConnections data;
+        if (levelReader instanceof ServerLevel serverLevel) {
+            data = DetachedConnections.get(serverLevel);
+        } else if (levelReader instanceof Level level && level.isClientSide()) {
+            data = DetachedClientData.get();
+        } else {
+            return;
+        }
+
         if (!data.hasOverrides(blockPos)) return;
 
-        // applies detached/forced overrides on top of whatever the block computed is
         for (Direction dir : Direction.Plane.HORIZONTAL) {
             switch (data.getArm(blockPos, dir)) {
                 case ON -> result = Arms.set(result, dir, true);

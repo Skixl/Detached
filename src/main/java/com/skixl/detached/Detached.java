@@ -1,6 +1,7 @@
 package com.skixl.detached;
 
 import com.skixl.detached.interaction.ConnectionDetacher;
+import com.skixl.detached.networking.DetachedNetworking;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.resources.Identifier;
@@ -15,6 +16,7 @@ public class Detached implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ConnectionDetacher.register();
+		DetachedNetworking.register();
 	}
 
 	public static Identifier modId(String path) {

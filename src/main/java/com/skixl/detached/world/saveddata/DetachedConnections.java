@@ -2,6 +2,7 @@ package com.skixl.detached.world.saveddata;
 
 import com.mojang.serialization.Codec;
 import com.skixl.detached.Detached;
+import com.skixl.detached.networking.DetachedNetworking;
 import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -63,6 +64,7 @@ public class DetachedConnections extends SavedData {
     }
 
     private final Long2IntOpenHashMap masks = new Long2IntOpenHashMap();
+    private ServerLevel level;
 
     /** key (string): block position converted to a string
      * value (integer): encoded override bitmask */
@@ -100,7 +102,9 @@ public class DetachedConnections extends SavedData {
     }
 
     public static DetachedConnections get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(TYPE);
+        DetachedConnections data =  level.getDataStorage().computeIfAbsent(TYPE);
+        data.level = level;
+        return data;
     }
 
 
@@ -131,6 +135,7 @@ public class DetachedConnections extends SavedData {
             masks.put(key, updatedBitmask);
         }
         setDirty();
+        notifyChanged(key, updatedBitmask);
     }
 
     public boolean hasOverrides(BlockPos blockPos) {
@@ -206,5 +211,43 @@ public class DetachedConnections extends SavedData {
 
     public void clearUpOverride(BlockPos blockPos) {
         setPost(blockPos, Override.NONE);
+    }
+
+
+
+
+    // ------------------------------------- client sync -------------------------------------
+    private void notifyChanged(long key, int mask) {
+        if (level != null) {
+            DetachedNetworking.broadcast(level, key, mask);
+        }
+    }
+
+    public Long2IntMap rawMasks() {
+        return masks;
+    }
+
+    /**
+     *
+     * @param replaceExisting whether to clear existing client data before applying incoming data
+     * @param positions block positions with updated override information
+     * @param masks override bitmask associated with each corresponding block position
+     */
+    public void applyOverrides(boolean replaceExisting, long[] positions, int[] masks) {
+        if (replaceExisting) {
+            this.masks.clear();
+        }
+
+        for (int i = 0; i < positions.length; i++) {
+            if (masks[i] == 0) {
+                this.masks.remove(positions[i]);
+            } else {
+                this.masks.put(positions[i], masks[i]);
+            }
+        }
+    }
+
+    public void clearAllOverrides() {
+        masks.clear();
     }
 }
