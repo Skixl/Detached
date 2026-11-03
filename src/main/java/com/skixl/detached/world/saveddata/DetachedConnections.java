@@ -143,8 +143,11 @@ public class DetachedConnections extends SavedData {
     }
 
     public void clear(BlockPos blockPos) {
+        long key = blockPos.asLong();
+
         if (masks.remove(blockPos.asLong()) != 0) {
             setDirty();
+            notifyChanged(key, 0);
         }
     }
 
